@@ -2,6 +2,7 @@ package seminar.dataflow.zeroanalysis;
 
 import java.util.HashMap;
 import java.util.Objects;
+
 import java.util.Set;
 
 /**
@@ -63,9 +64,15 @@ public class ZeroAbstractState {
      */
     public ZeroAbstractState union(ZeroAbstractState another) {
         ZeroAbstractState result = new ZeroAbstractState();
-        // TODO: IMPLEMENT
-        throw new UnsupportedOperationException("Operation is not implemented yet.");
+        // First, copy this.map into result
+        this.map.forEach((var, value) -> 
+                result.map.put(var, value));        
+        // Second, union another.map with this.map
+        another.map.forEach((var, value) ->
+                result.map.merge(var, value, ZeroAbstractValue::merge));  
+        return result;
     }
+    
 
     /**
      * Clears the State.

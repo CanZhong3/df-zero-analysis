@@ -1,6 +1,5 @@
 package seminar.dataflow.zeroanalysis;
 
-
 import seminar.dataflow.util.visitor.AbstractValueVisitor;
 import seminar.dataflow.util.visitor.ValueVisitor;
 import pascal.taie.ir.exp.Var;
@@ -71,8 +70,10 @@ public class ZeroValueVisitor extends AbstractValueVisitor<ZeroAbstractValue> {
      ***/
     private boolean maybeZeroOperand(ZeroAbstractValue operand)
     {
-        // TODO: IMPLEMENT.
-        throw new UnsupportedOperationException();
+        if(operand.equals(this.resolvedValue.TOP) || operand.equals(this.resolvedValue.ZERO)){
+            return true;
+        }
+        return false;
     }
     /**
      * This method is called when the expression being analyzed is a multiplication.
@@ -111,8 +112,15 @@ public class ZeroValueVisitor extends AbstractValueVisitor<ZeroAbstractValue> {
      */
     @Override
     public void visitIntegerConstant(int value) {
-        // TODO: IMPLEMENT.
-        throw new UnsupportedOperationException();
+        if(value > 0){
+            resolvedValue = ZeroAbstractValue.POSITIVE;
+        }
+        else if (value == 0){
+            resolvedValue = ZeroAbstractValue.ZERO;
+        }
+        else{
+            resolvedValue = ZeroAbstractValue.NEGATIVE;
+        }
     }
 
     /**
